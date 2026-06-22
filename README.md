@@ -16,31 +16,6 @@ The application evaluates parcels based on three parameters: **Weight (kg)**, **
 3. **Weight &gt; 10kg** &rarr; Routed to **Heavy Department**
 4. **Value &gt; €1,000** &rarr; Held for **Insurance Approval** (Status: `PENDING_INSURANCE_APPROVAL`), overriding weight classifications.
 
-### Architecture Diagram
-
-```mermaid
-graph TD
-    Client[React Client Vite/Tailwind] -->|HTTP Request| API[Express API Gateway]
-    API -->|Security Headers| Helmet[Helmet Security Middleware]
-    API -->|DOS Prevention| Limiter[Rate Limiter Middleware]
-    API -->|Validator check| Joi[Joi Schema Payload Validation]
-    
-    Joi -->|Route Request| Router[Parcel Router]
-    Router -->|Execution request| Service[Routing Service]
-    
-    Startup[App Bootstrapping] -->|JSON Read| Config[rules.json]
-    Config -->|Startup Audit| JoiConf[Joi Rules Validator]
-    JoiConf -->|On Success| Registry[Rule Registry Singleton]
-    JoiConf -->|On Invalid Schema| Exit[Process Aborted exit 1]
-    
-    Service -->|Evaluation| Registry
-    Registry -->|Evaluate Conditions| Rules[Routing Rule Priority Queue]
-    
-    Service -->|Save State| DB[(MongoDB database)]
-    Service -->|Append Audit Event| Audit[(Audit Logs)]
-    Service -->|Exceptions log| Sentry[Sentry APM]
-    Service -->|JSON structured logging| Winston[Winston File & Console Logger]
-```
 
 ---
 
