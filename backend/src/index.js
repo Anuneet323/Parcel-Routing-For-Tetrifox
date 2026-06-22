@@ -60,10 +60,15 @@ const startServer = async () => {
       server.close(() => {
         logger.info('HTTP server closed.');
         const mongoose = require('mongoose');
-        mongoose.connection.close(false, () => {
-          logger.info('Database connections closed.');
-          process.exit(0);
-        });
+        mongoose.connection.close()
+          .then(() => {
+            logger.info('Database connections closed.');
+            process.exit(0);
+          })
+          .catch((err) => {
+            logger.error(`Error closing database connection: ${err.message}`);
+            process.exit(1);
+          });
       });
     };
 
