@@ -1,0 +1,49 @@
+[
+  {
+    "id": "insurance-rule",
+    "name": "Insurance Approval Rule",
+    "conditions": [
+      { "field": "value", "operator": "greater_than", "value": 1000 }
+    ],
+    "action": {
+      "status": "PENDING_INSURANCE_APPROVAL"
+    },
+    "priority": 100
+  },
+  {
+    "id": "mail-rule",
+    "name": "Mail Rule",
+    "conditions": [
+      { "field": "weight", "operator": "less_than_or_equal", "value": 1 }
+    ],
+    "action": {
+      "department": "Mail Department",
+      "status": "ROUTED"
+    },
+    "priority": 90
+  },
+  {
+    "id": "regular-rule",
+    "name": "Regular Rule",
+    "conditions": [
+      { "field": "weight", "operator": "less_than_or_equal", "value": 10 }
+    ],
+    "action": {
+      "department": "Regular Department",
+      "status": "ROUTED"
+    },
+    "priority": 80
+  },
+  {
+    "id": "heavy-rule",
+    "name": "Heavy Rule",
+    "conditions": [
+      { "field": "weight", "operator": "greater_than", "value": 10 }
+    ],
+    "action": {
+      "department": "Heavy Department",
+      "status": "ROUTED"
+    },
+    "priority": 70
+  }
+]

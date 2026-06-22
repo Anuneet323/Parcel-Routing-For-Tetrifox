@@ -1,0 +1,22 @@
+[
+  {
+    "weight": 0.8,
+    "value": 45,
+    "destinationCountry": "Germany"
+  },
+  {
+    "weight": 4.2,
+    "value": 200,
+    "destinationCountry": "France"
+  },
+  {
+    "weight": 15.5,
+    "value": 350,
+    "destinationCountry": "Canada"
+  },
+  {
+    "weight": 1.2,
+    "value": 1500,
+    "destinationCountry": "Japan"
+  }
+]
