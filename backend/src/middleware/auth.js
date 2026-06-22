@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      logger.warn(`Unauthorized API access attempt from IP ${req.ip} - Missing token`);
+      logger.warn('Unauthorized API access attempt - Missing token');
       return res.status(401).json({
         success: false,
         error: { message: 'Authentication required. Please log in.' }
@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     // Match against our demo authentication token
     if (token !== 'demo-routing-token-xyz') {
-      logger.warn(`Unauthorized API access attempt from IP ${req.ip} - Invalid token`);
+      logger.warn('Unauthorized API access attempt - Invalid token');
       return res.status(401).json({
         success: false,
         error: { message: 'Invalid or expired session token.' }

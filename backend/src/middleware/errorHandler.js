@@ -15,7 +15,6 @@ module.exports = (err, req, res, next) => {
     statusCode,
     url: req.originalUrl,
     method: req.method,
-    ip: req.ip,
     // Avoid logging passwords or sensitive tokens if they exist, but OK to log weight/value parameters
     body: req.body,
     stack: err.stack

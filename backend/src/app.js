@@ -44,14 +44,40 @@ app.use('/api/', limiter);
 // 3. Body Parsing Middleware (with size restrictions to protect against large payloads)
 app.use(express.json({ limit: '1mb' }));
 
-// 4. Request Logging Middleware
+// 4. Request & Response Logging Middleware (excl. IP and user-agent metadata)
 app.use((req, res, next) => {
-  logger.info(`HTTP Request: ${req.method} ${req.path}`, {
-    method: req.method,
-    path: req.path,
-    ip: req.ip,
-    userAgent: req.get('User-Agent')
+  // Capture request body (mask credentials on login for security)
+  const reqBody = req.path === '/api/auth/login' && req.body
+    ? { ...req.body, password: '[REDACTED]' }
+    : req.body;
+
+  // Intercept json send method to log response payload
+  const originalJson = res.json;
+  let responseBody;
+  res.json = function (body) {
+    responseBody = body;
+    return originalJson.apply(res, arguments);
+  };
+
+  res.on('finish', () => {
+    // Only log metadata for routes inside the /api scope or non-health checkers
+    if (req.path.startsWith('/api')) {
+      const logData = {
+        method: req.method,
+        path: req.path,
+        statusCode: res.statusCode,
+        requestBody: reqBody,
+        responseBody: responseBody
+      };
+
+      if (res.statusCode >= 400) {
+        logger.error(`API Call failed: ${req.method} ${req.path} [Status: ${res.statusCode}]`, logData);
+      } else {
+        logger.info(`API Call succeeded: ${req.method} ${req.path} [Status: ${res.statusCode}]`, logData);
+      }
+    }
   });
+
   next();
 });
 
