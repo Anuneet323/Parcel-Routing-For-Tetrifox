@@ -10,15 +10,19 @@ module.exports = (err, req, res, next) => {
     Sentry.captureException(err);
   }
 
-  // 2. Structured logger record using Winston
-  logger.error(`Exception occurred: ${err.message} [Status: ${statusCode}]`, {
+  // 2. Structured logger record using Winston (only show stack traces for internal server 5xx errors)
+  const logMetadata = {
     statusCode,
     url: req.originalUrl,
     method: req.method,
-    // Avoid logging passwords or sensitive tokens if they exist, but OK to log weight/value parameters
-    body: req.body,
-    stack: err.stack
-  });
+    body: req.path === '/api/auth/login' && req.body ? { ...req.body, password: '[REDACTED]' } : req.body
+  };
+
+  if (statusCode >= 500) {
+    logMetadata.stack = err.stack;
+  }
+
+  logger.error(`Exception occurred: ${err.message} [Status: ${statusCode}]`, logMetadata);
 
   // 3. Client response sanitization - NEVER send stack trace to client
   return res.status(statusCode).json({
