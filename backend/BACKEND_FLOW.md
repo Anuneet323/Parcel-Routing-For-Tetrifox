@@ -14,8 +14,10 @@ backend/src/
 │   ├── rules.json       # Routing rule configurations
 │   └── sentry.js
 ├── controllers/         # Web/HTTP Interface controllers (extract payloads, send JSON)
+│   ├── authController.js
 │   └── parcelController.js
 ├── middleware/          # Express route middlewares (Validation execution, Error handlers)
+│   ├── auth.js
 │   ├── errorHandler.js
 │   └── validate.js
 ├── models/              # Mongoose collection schemas (data definitions)
@@ -25,6 +27,7 @@ backend/src/
 │   ├── auditLogRepository.js
 │   └── parcelRepository.js
 ├── routes/              # Express HTTP routers (mapping routes to controllers)
+│   ├── authRoutes.js
 │   └── parcelRoutes.js
 ├── rules/               # Extensible Rule Engine
 │   ├── operators.js     # Registry mapping operator strings to logic

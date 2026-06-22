@@ -15,6 +15,7 @@ frontend/src/
 ├── pages/               # Main view containers
 │   ├── BatchUpload.jsx  # Bulk parcel processing interface
 │   ├── Dashboard.jsx    # Metrics cards, parcels log, and error feeds
+│   ├── Login.jsx        # Credentials submission interface
 │   └── SingleRoute.jsx  # Single parcel validator form and result display
 ├── services/            # Backend communication client
 │   └── api.js           # Axios instance mapping REST routes

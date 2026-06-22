@@ -5,6 +5,7 @@ import BootLoader from './components/BootLoader';
 import Dashboard from './pages/Dashboard';
 import SingleRoute from './pages/SingleRoute';
 import BatchUpload from './pages/BatchUpload';
+import Login from './pages/Login';
 
 // Boot loader is shown until BOTH document.fonts.ready resolves AND a minimum
 // visible window elapses (so it never flashes). A hard fallback guarantees the
@@ -21,6 +22,18 @@ const pageVariants = {
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isBooting, setIsBooting] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    // Check if user session already exists
+    const token = localStorage.getItem('routing_app_token');
+    const savedUser = localStorage.getItem('routing_app_username');
+    if (token && savedUser) {
+      setIsAuthenticated(true);
+      setUsername(savedUser);
+    }
+  }, []);
 
   useEffect(() => {
     let done = false;
@@ -55,6 +68,19 @@ function App() {
     };
   }, []);
 
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    setUsername(localStorage.getItem('routing_app_username') || 'admin');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('routing_app_token');
+    localStorage.removeItem('routing_app_username');
+    setIsAuthenticated(false);
+    setUsername('');
+    setActiveTab('dashboard');
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'single':
@@ -84,22 +110,31 @@ function App() {
       </AnimatePresence>
 
       <div className="flex min-h-dvh flex-col bg-canvas">
-        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Navbar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          username={username}
+          onLogout={handleLogout}
+        />
 
       <main className="flex-1">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            variants={pageVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="py-12 sm:py-16"
-          >
-            {renderContent()}
-          </motion.div>
-        </AnimatePresence>
+        {isAuthenticated ? (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="py-12 sm:py-16"
+            >
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        )}
       </main>
 
       <footer className="mt-auto bg-deep text-on-dark">

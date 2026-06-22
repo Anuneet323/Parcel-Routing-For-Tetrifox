@@ -42,6 +42,8 @@ jest.mock('../models/auditLog', () => {
   return Model;
 });
 
+jest.mock('../middleware/auth', () => (req, res, next) => next());
+
 const Parcel = require('../models/parcel');
 const AuditLog = require('../models/auditLog');
 const routingService = require('../services/routingService');

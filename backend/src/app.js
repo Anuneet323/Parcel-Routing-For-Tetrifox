@@ -5,6 +5,8 @@ const rateLimit = require('express-rate-limit');
 const { initSentry, setupSentryErrorHandler } = require('./config/sentry');
 const logger = require('./config/logger');
 const parcelRoutes = require('./routes/parcelRoutes');
+const authRoutes = require('./routes/authRoutes');
+const auth = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -59,7 +61,8 @@ app.get('/health', (req, res) => {
 });
 
 // 5. API Routes
-app.use('/api/parcels', parcelRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/parcels', auth, parcelRoutes);
 
 // Catch-all route handler (404)
 app.use((req, res, next) => {

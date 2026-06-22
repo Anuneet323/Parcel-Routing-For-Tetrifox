@@ -9,6 +9,23 @@ const api = axios.create({
   }
 });
 
+// Automatically inject authorization header if token is stored in localStorage
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('routing_app_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+export const loginUser = async (username, password) => {
+  const url = API_BASE_URL.replace('/parcels', '/auth/login');
+  const response = await axios.post(url, { username, password });
+  return response.data;
+};
+
 export const routeSingle = async (parcelData) => {
   const response = await api.post('/route', parcelData);
   return response.data;
