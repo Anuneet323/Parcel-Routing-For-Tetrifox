@@ -2,7 +2,7 @@
 
 A production-ready, highly reliable, and secure **Parcel Routing System** built with the MERN stack (MongoDB, Express, React, Node.js). 
 
-This system uses a dynamic, configurable **Rule Engine pattern** (supporting the Open-Closed Principle) rather than hardcoded if-else statements. This permits new routing rules—like country-specific channels—to be introduced simply by modifying external configuration files, without modifying any underlying engine code.
+This system uses a dynamic, configurable **Rule Engine pattern** (supporting the Open-Closed Principle) rather than hardcoded if-else statements. This permits new routing rules like country-specific channels to be introduced simply by modifying external configuration files, without modifying any underlying engine code.
 
 ---
 
