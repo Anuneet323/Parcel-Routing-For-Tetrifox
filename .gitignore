@@ -1,0 +1,67 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# Application Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build & Distribution
+dist/
+dist-ssr/
+build/
+.next/
+out/
+
+# IDE & Editor Directories
+.vscode/
+.idea/
+.DS_Store
+.ds/
+.DS/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-project
+*.sublime-workspace
+
+# OS Files
+Thumbs.db
+.env.vault
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Misc
+.cache/
+.turbo/
+.vercel/
+*.pem
+
+# Local database files (if using local MongoDB)
+data/
+mongod.lock
+
+# IDE Extensions lock
+.vscode/extensions.json
+
+# Temp files
+*.tmp
+*.temp
+.temp/
